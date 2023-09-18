@@ -4,9 +4,7 @@
 # unidbg-fetch-qsign-onekey
 
 
-本项目使用qsign1.1.9版本，整合了开发版本的go-cqhttp，来源[f16d72f](https://github.com/Mrs4s/go-cqhttp/actions/runs/6036458147)
-
-由于当前正式版本go-cqhttp(1.1.0)暂未适配新版qsign，如需旧版请移步release
+本项目使用qsign1.1.9版本,使用时请确保Start_Qsign.bat和sealdice-core.exe同一级目录,而不是次一级目录
 
 
 用于一键在Windows下部署[fuqiuluo/unidbg-fetch-qsign](https://github.com/fuqiuluo/unidbg-fetch-qsign)<br>
@@ -26,7 +24,7 @@
 
 ## ✨安装说明
 
-请直接点击 `Code - Download ZIP` 下载本项目，直接解压缩到任意不包含中文和空格的路径中。
+请直接点击 `Code - Download ZIP` 下载本项目，直接解压缩到sealdice中。
 
 已知问题：
 
@@ -40,23 +38,25 @@
 
 ## ✨使用方法
 
-### 如何使用go-cqhttp联动运行
+1. 双击Start_Qsign.bat，按照提示输入内容。按下enter键确认。
+前面的txlib_version、host、port、key这4个可以直接按enter下一步，这个可以跳过。
 
-1. 首先，运行 `go-cqhttp.bat`，按照提示生成 `config.yml` 。
+2. 然后脚本会提示你输入Account uin（QQ账号），请务必正确输入，按下回车。
+当它出现“Responding at http://127.0.0.1:13579”后开始操作下一步
 
-2. 双击 `Start_Qsign.bat` 启动qsign，按照提示依次键入 `txlib_version` 参数、设定`host`、`port`、`key`的值。 (👈如果不知道这些是干什么的，请直接依次按下Enter）
+3. 双击启动sealdice-core.exe
+在账号设置处，点击添加，输入账号信息，
+选择 [QQ账号]-[设备-AndroidPad - 可共存]
+输入账号一定和上面输入的Account uin（QQ账号）一致。
+一定要输入密码
+签名服务选择[简易配置]
+服务url输入http://127.0.0.1:13579（如qsign你是一直按enter下一步跳过，没有自定义的话）
+服务key输入1145141919810
 
-3. 在启动完成后，qsign会告诉您当前运行api的地址，如果您没设定过host和key，那么默认是 `http://127.0.0.1:13579`。key已经在开始时设定过，如果您没设定，那么默认是 `1145141919810`。(👈这些东西会自动写入到 `config.yml` ）
+4. 点击下一步，耐心等待滑块链接出现并滑块。滑块完成后耐心等待短信验证码输入框。（可能会很慢）
+*如果提示237，请把滑块链接复制给别人打开操作滑块，或用手机流量打开操作滑块。
 
-4. 如果脚本检测到 `config.yml` 尚未设定账号和密码，那么会提示你输入账号(Account uin)和密码(password)，输入后会同步进 `config.yml` 。
-
-5. 如果日后需要修改 `txlib_version` 的版本，您可以删除文件夹根目录下的 `txlib_version.json` 来重新进入设定流程，也可以对此文件进行修改。
-
-### 不对接go-cqhttp？
-
-删除 `go-cqhttp.bat`及 `go-cqhttp_windows_386.exe`
-
-然后继续操作上面的步骤2
+5. 后续不可以关闭qsign，qsign如果关闭会发送不出去消息。如果出现问题，请重启qsign后，在账号设置里点击重新登陆。
 
 ## 🌏分享您的Qsign API
 
