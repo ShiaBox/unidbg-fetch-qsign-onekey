@@ -1,5 +1,5 @@
 @echo off
-title Qsign-Onekey by rhwong v1.1.9-fix1
+title Qsign-Onekey by rhwong shia v1.1.9-fix1-sealdice 8970 
 setlocal enabledelayedexpansion
 set JAVA_HOME=.\jre
 set "ver=1.1.9-fix1"
@@ -28,9 +28,9 @@ if not exist "txlib_version.json" (
   echo Please enter an option to save. 
   echo If you press enter directly, save the default values.
   echo -------------------------------------------------------------------------------------------------
-  set /p "txlib_version=txlib_version(optional:3.5.1/3.5.2/8.9.58/8.9.63(default)/8.9.68/8.9.70/8.9.71/8.9.73): "
+  set /p "txlib_version=txlib_version(optional:3.5.1/3.5.2/8.9.58/8.9.63/8.9.68/8.9.70(default)/8.9.71/8.9.73): "
        if "!txlib_version!"=="" (
-	   set "txlib_version=8.9.63"
+	   set "txlib_version=8.9.70"
        )  
   set "json_file=%library%!txlib_version!/config.json"
   
@@ -119,7 +119,7 @@ if not exist "txlib_version.json" (
   for /F "delims=" %%C in ('lib\jq.exe -r ".key" %json_file%') do set "key=%%C"
 )
 
-set "targetPattern=*go-cqhttp*.exe"
+set "targetPattern=*sealdice-core*.exe"
 set "fileExists=0"
 
 for %%i in (%targetPattern%) do (
@@ -127,48 +127,28 @@ for %%i in (%targetPattern%) do (
 )
 
 if %fileExists%==1 (
-  if exist "%config_file%" (
-    lib\sed.exe -i "s/url: 'http:\/\/127.0.0.1:8080'/Example-sign-server/; s/url: 'https:\/\/signserver.example.com'/Example-sign-server/" "%config_file%"
-    if "!host!"=="0.0.0.0" (
-      lib\sed.exe -i "0,/url: '.*'/s/url: '.*'/url: 'http:\/\/localhost:!port!'/; 0,/key: '.*'/s/key: '.*'/key: '!key!'/" "%config_file%"
-      ) else ( 
-      lib\sed.exe -i "0,/url: '.*'/s/url: '.*'/url: 'http:\/\/!host!:!port!'/; 0,/key: '.*'/s/key: '.*'/key: '!key!'/" "%config_file%"
-      )
-  ) else (
-    echo Can't find [config.yml]. If you forgot to generate it, please run [go-cqhttp.bat]
-  )
-      echo Sync protocol version to go-cqhttp data folder.
-      md data\versions
+	  set /p "account=Account uin: "
+      echo -------------------------------------------------------------------------------------------------
+      echo Your uin:!account!
+	  echo Sync protocol version to go-cqhttp data folder.
+      md data\default\extra\go-cqhttp-qq!account!\data\versions
       if "!txlib_version!" neq "3.5.1" (
         if "!txlib_version!" neq "3.5.2" (
           if "!txlib_version!" neq "8.9.71" (
-      copy txlib\!txlib_version!\android_pad.json data\versions\6.json
-      copy txlib\!txlib_version!\android_phone.json data\versions\1.json
+      copy txlib\!txlib_version!\android_pad.json data\default\extra\go-cqhttp-qq!account!\data\versions\6.json
+      copy txlib\!txlib_version!\android_phone.json data\default\extra\go-cqhttp-qq!account!\data\versions\1.json
           )
         )
       )
       if "!txlib_version!"=="8.9.71" (
         echo Warning : This protocol just support ANDROID_PHONE now!!!!! Please changed device.json -> protocol=1
-        copy txlib\!txlib_version!\android_phone.json data\versions\1.json
+        copy txlib\!txlib_version!\android_phone.json data\default\extra\go-cqhttp-qq!account!\data\versions\1.json
       )
 ) else (
-  echo Run separately from go-cqhttp?
+  echo -------------------------------------------------------------------------------------------------
+  echo Run separately from sealdice?
   echo Please manually synchronize the protocol version.
-  echo And enter the Qsign API ADDRESS and KEY to other client.
 )  
-  findstr /C:"uin: 1233456" "%config_file%" 2>nul >nul
-  if %errorlevel% equ 0 (
-      set /p "account=Account uin: "
-      set /p "password=Password: "
-      echo -------------------------------------------------------------------------------------------------
-      echo Your uin:!account! password:!password!
-      lib\sed.exe -i "s/uin: 1233456/uin: !account!/g; s/password: ''/password: '!password!'/g; s/auto-refresh-token: false/auto-refresh-token: true/g" "%config_file%"
-      echo Account and password saved!
-  ) else (
-      echo -------------------------------------------------------------------------------------------------
-      echo The [config.yml] already contains account information or not exist.
-      echo Skip account settings.
-  )
 
 echo -------------------------------------------------------------------------------------------------
 echo Qsign API:http://!host!:!port!
