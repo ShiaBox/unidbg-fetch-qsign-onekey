@@ -26,15 +26,7 @@
 
 请直接点击 `Code - Download ZIP` 下载本项目，直接解压缩到sealdice中。
 
-已知问题：
-
-对于最新的11内核的Windows Server版本，出现了严重兼容性问题，
-
-具体表现为对接go-cqhttp时出现各种报错，原因未知。
-
-此时可以考虑将qsign的`host`设置为`0.0.0.0`来试试。
-
-建议购买云服务器时不要选择Windows Server 2022
+#### 注意：请确保Start_Qsign.bat和sealdice-core.exe同一级目录,而不是次一级目录
 
 ## ✨使用方法
 
